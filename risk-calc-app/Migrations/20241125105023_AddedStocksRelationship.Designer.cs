@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using risk_calc_app.Data.Services;
 
@@ -10,9 +11,11 @@ using risk_calc_app.Data.Services;
 namespace risk_calc_app.Migrations
 {
     [DbContext(typeof(PortfoliosService))]
-    partial class PortfolioDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241125105023_AddedStocksRelationship")]
+    partial class AddedStocksRelationship
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

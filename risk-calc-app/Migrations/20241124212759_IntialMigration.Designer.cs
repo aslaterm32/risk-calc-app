@@ -4,13 +4,13 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using risk_calc_app.Data;
+using risk_calc_app.Data.Services;
 
 #nullable disable
 
 namespace risk_calc_app.Migrations
 {
-    [DbContext(typeof(PortfolioDbContext))]
+    [DbContext(typeof(PortfoliosService))]
     [Migration("20241124212759_IntialMigration")]
     partial class IntialMigration
     {

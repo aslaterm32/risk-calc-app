@@ -1,6 +1,6 @@
-
-using risk_calc_app.Data;
 using Microsoft.EntityFrameworkCore;
+using risk_calc_app.Data;
+using risk_calc_app.Data.Services;
 
 namespace risk_calc_app
 {
@@ -11,7 +11,7 @@ namespace risk_calc_app
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
-            builder.Services.AddDbContext<PortfolioDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("PortfolioConnection")));
+            builder.Services.AddDbContext<RiskCalcAppDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("PortfolioConnection")));
 
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
