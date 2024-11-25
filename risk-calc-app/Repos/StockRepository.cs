@@ -24,33 +24,18 @@ namespace risk_calc_app.Repos
         public async Task<StockItem?> GetStockByIdAsync(int id)
         {
             var stock = await _context.StockItems.FirstOrDefaultAsync(i => i.Id == id);
-
-            if (stock == null)
-            {
-                return null;
-            }
-
             return stock;
         }
          
-        public async Task<StockItem?> CreateStockAsync(StockDto stockDto)
+        public async Task<StockItem?> CreateStockAsync(StockItem stock)
         {
-            var stock = new StockItem()
-            {
-                Id = stockDto.Id,
-                PortfolioId = stockDto.PortfolioId,
-                Name = stockDto.Name,
-                Ticker = stockDto.Ticker,
-                Weighting = stockDto.Weighting
-            };
-
             await _context.StockItems.AddAsync(stock);
             await _context.SaveChangesAsync();
 
             return stock;
         }
 
-        public async Task<StockItem> UpdateStockByIdAsync(int id, StockDto stockDto)
+        public async Task<StockItem> UpdateStockByIdAsync(int id, StockItem stock)
         {
             var stockForUpdate = await _context.StockItems.FirstOrDefaultAsync(i => i.Id == id);
 
@@ -59,9 +44,11 @@ namespace risk_calc_app.Repos
                 return null;
             }
 
-            stockForUpdate.Name = stockDto.Name;
-            stockForUpdate.Ticker = stockDto.Ticker;
-            stockForUpdate.Weighting = stockDto.Weighting;
+            stockForUpdate.Name = stock.Name;
+            stockForUpdate.Ticker = stock.Ticker;
+            stockForUpdate.Weighting = stock.Weighting;
+
+            await _context.SaveChangesAsync();
 
             return stockForUpdate;
         }
@@ -79,6 +66,11 @@ namespace risk_calc_app.Repos
             await _context.SaveChangesAsync();
 
             return stockForDelete;
+        }
+
+        public Task<bool> StockExists(int id)
+        {
+            return _context.StockItems.AnyAsync(i => i.Id == id);
         }
     }
 }

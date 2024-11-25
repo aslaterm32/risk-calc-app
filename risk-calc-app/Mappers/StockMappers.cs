@@ -17,12 +17,21 @@ namespace risk_calc_app.Mappers
             };
         }
 
-        public static StockItem ToStockFromStockDto(this StockDto stockDto)
+        public static StockItem ToStockFromCreateStockDto(this CreateStockDto stockDto, int portfolioId)
         {
             return new StockItem
             {
-                Id = stockDto.Id,
-                PortfolioId = stockDto.PortfolioId,
+                PortfolioId = portfolioId,
+                Name = stockDto.Name,
+                Ticker = stockDto.Ticker,
+                Weighting = stockDto.Weighting
+            };
+        }
+
+        public static StockItem ToStockFromUpdateStockDto(this UpdateStockDto stockDto)
+        {
+            return new StockItem
+            {
                 Name = stockDto.Name,
                 Ticker = stockDto.Ticker,
                 Weighting = stockDto.Weighting

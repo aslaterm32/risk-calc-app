@@ -23,17 +23,17 @@ namespace risk_calc_app.Controllers
 
         //GET api/portfolios
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<PortfolioDto>>> Get()
+        public async Task<ActionResult<List<PortfolioDto>>> Get()
         {
                 var portfolios = await _portfolioRepo.GetAllPortfoliosAsync();
                 return Ok(portfolios);
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<PortfolioItem>> GetById(int id)
+        public async Task<ActionResult<PortfolioDto>> GetById(int id)
         {
                 var portfolioItem = await _portfolioRepo.GetPortfolioByIdAsync(id);
-                return Ok(portfolioItem);
+                return Ok(portfolioItem.ToPortfolioDto());
         }
 
         //POST api/portfolios

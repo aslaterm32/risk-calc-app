@@ -7,8 +7,9 @@ namespace risk_calc_app.Interfaces
     {
         Task<List<StockItem>> GetAllStocksAsync();
         Task<StockItem?> GetStockByIdAsync(int id);
-        Task<StockItem?> CreateStockAsync(StockDto stockDto);
-        Task<StockItem?> UpdateStockByIdAsync(int id, StockDto stockDto);
+        Task<StockItem?> CreateStockAsync(StockItem stock);
+        Task<StockItem?> UpdateStockByIdAsync(int id, StockItem stock);
         Task<StockItem?> DeleteStockByIdAsync(int id);
+        Task<bool> StockExists(int id);
     }
 }

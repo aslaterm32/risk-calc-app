@@ -18,13 +18,13 @@ namespace risk_calc_app.Repos
 
         public async Task<List<PortfolioItem>> GetAllPortfoliosAsync()
         {
-            var portfolios = await _context.PortfolioItems.ToListAsync();
+            var portfolios = await _context.PortfolioItems.Include(i => i.Stocks).ToListAsync();
             return portfolios;
         }
 
         public async Task<PortfolioItem?> GetPortfolioByIdAsync(int id)
         {
-            var portfolio = await _context.PortfolioItems.FirstOrDefaultAsync(i => i.Id == id);
+            var portfolio = await _context.PortfolioItems.Include(i => i.Stocks).FirstOrDefaultAsync(i => i.Id == id);
 
             if (portfolio == null)
             {
@@ -73,6 +73,11 @@ namespace risk_calc_app.Repos
             await _context.SaveChangesAsync();
 
             return portfolioForDelete;
+        }
+
+        public Task<bool> PortfolioExists(int id)
+        {
+            return _context.PortfolioItems.AnyAsync(i => i.Id == id);
         }
 
     }

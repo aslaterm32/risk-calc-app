@@ -10,5 +10,6 @@ namespace risk_calc_app.Interfaces
         Task<Models.PortfolioItem?> CreatePortfolioAsync(PortfolioItem portfolio);
         Task<Models.PortfolioItem?> UpdatePortfolioByIdAsync(int id, PortfolioItem portfolio);
         Task<Models.PortfolioItem?> DeletePortfolioByIdAsync(int id);
+        Task<bool> PortfolioExists(int id);
     }
 }
