@@ -5,29 +5,24 @@
 namespace risk_calc_app.Migrations
 {
     /// <inheritdoc />
-    public partial class AddedStocksRelationship : Migration
+    public partial class ScrewedItUp : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropColumn(
-                name: "OwnerId",
-                table: "PortfolioItems");
-
-            migrationBuilder.AddColumn<string>(
-                name: "Name",
-                table: "PortfolioItems",
-                type: "nvarchar(50)",
-                maxLength: 50,
-                nullable: false,
-                defaultValue: "");
-
-            migrationBuilder.AddColumn<decimal>(
-                name: "Volatility",
-                table: "PortfolioItems",
-                type: "decimal(18,2)",
-                nullable: false,
-                defaultValue: 0m);
+            migrationBuilder.CreateTable(
+                name: "PortfolioItems",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Volatility = table.Column<decimal>(type: "decimal(18,2)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PortfolioItems", x => x.Id);
+                });
 
             migrationBuilder.CreateTable(
                 name: "StockItems",
@@ -63,20 +58,8 @@ namespace risk_calc_app.Migrations
             migrationBuilder.DropTable(
                 name: "StockItems");
 
-            migrationBuilder.DropColumn(
-                name: "Name",
-                table: "PortfolioItems");
-
-            migrationBuilder.DropColumn(
-                name: "Volatility",
-                table: "PortfolioItems");
-
-            migrationBuilder.AddColumn<string>(
-                name: "OwnerId",
-                table: "PortfolioItems",
-                type: "nvarchar(max)",
-                nullable: false,
-                defaultValue: "");
+            migrationBuilder.DropTable(
+                name: "PortfolioItems");
         }
     }
 }

@@ -2,17 +2,20 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using risk_calc_app.Data.Services;
+using risk_calc_app.Data;
 
 #nullable disable
 
 namespace risk_calc_app.Migrations
 {
-    [DbContext(typeof(PortfoliosService))]
-    partial class PortfolioDbContextModelSnapshot : ModelSnapshot
+    [DbContext(typeof(RiskCalcAppDbContext))]
+    [Migration("20241125191759_ScrewedItUp")]
+    partial class ScrewedItUp
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -34,7 +37,7 @@ namespace risk_calc_app.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<decimal>("Volatility")
+                    b.Property<decimal?>("Volatility")
                         .HasColumnType("decimal(18,2)");
 
                     b.HasKey("Id");

@@ -1,8 +1,9 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.AspNetCore.Mvc;
-using risk_calc_app.Data.Services;
+﻿using Microsoft.AspNetCore.Mvc;
+using risk_calc_app.Data;
+using risk_calc_app.DTOs.Portfolio;
+using risk_calc_app.Interfaces;
 using risk_calc_app.Models;
+using risk_calc_app.Mappers;
 
 namespace risk_calc_app.Controllers
 {
@@ -11,83 +12,55 @@ namespace risk_calc_app.Controllers
     public class PortfolioController : ControllerBase
     {
 
-        private readonly PortfoliosService _portfoliosService;
+        private readonly RiskCalcAppDbContext _context;
+        private readonly IPortfolioRepository _portfolioRepo;
 
-        public PortfolioController(PortfoliosService portfoliosService)
+        public PortfolioController(RiskCalcAppDbContext context, IPortfolioRepository portfolioRepo)
         {
-            _portfoliosService = portfoliosService;
+            _portfolioRepo = portfolioRepo;
+            _context = context;
         }
 
         //GET api/portfolios
         [HttpGet]
-        public ActionResult<IEnumerable<PortfolioItem>> Get()
+        public async Task<ActionResult<IEnumerable<PortfolioDto>>> Get()
         {
-            try
-            {
-                var portfolios = _portfoliosService.GetAllPortfolios();
+                var portfolios = await _portfolioRepo.GetAllPortfoliosAsync();
                 return Ok(portfolios);
-            } catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
         }
 
         [HttpGet("{id}")]
-        public ActionResult<PortfolioItem> Get(int id)
+        public async Task<ActionResult<PortfolioItem>> GetById(int id)
         {
-            try
-            {
-                var portfolioItem = _portfoliosService.GetPortfolioById(id);
+                var portfolioItem = await _portfolioRepo.GetPortfolioByIdAsync(id);
                 return Ok(portfolioItem);
-            } catch (Exception ex)
-            {
-                return NotFound(ex.Message);
-            }
         }
 
         //POST api/portfolios
         [HttpPost]
-        public ActionResult Post([FromBody] PortfolioItem portfolioItem)
+        public async Task<ActionResult<PortfolioItem>> Create([FromBody] CreatePortfolioDto portfolioDto)
         {
-            try
-            {
-                _portfoliosService.AddPortfolios(portfolioItem);
-                return CreatedAtAction(nameof(Get), new { id = portfolioItem.Id }, portfolioItem);
-            } catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-            
+            var portfolio = portfolioDto.ToPortfolioFromCreatePortfolioDto();
+            await _portfolioRepo.CreatePortfolioAsync(portfolio);
+
+            return CreatedAtAction(nameof(GetById), new { id = portfolio.Id }, portfolio.ToPortfolioDto());
         }
 
         //PUT api/portfolios
         [HttpPut("{id}")]
-        public ActionResult Put(int id, [FromBody] PortfolioItem portfolioItem)
+        public async Task<ActionResult> Put([FromRoute] int id, [FromBody] UpdatePortfolioDto portfolioDto)
         {
-
-            try
-            {
-                _portfoliosService.UpdatePortfolioById(id, portfolioItem);
-                return NoContent();
-
-            } catch (Exception ex)
-            {
-                return NotFound(ex.Message);
-            }
+              var portfolio = portfolioDto.ToPortfolioFromUpdatePortfolioDto();   
+             await _portfolioRepo.UpdatePortfolioByIdAsync(id, portfolio);
+             return NoContent();
         }
 
         //DELETE api/portfolios
         [HttpDelete("{id}")]
-        public ActionResult Delete(int id)
+        public async Task<ActionResult> Delete(int id)
         {
-            try
-            {
-                _portfoliosService.DeletePortfolioById(id);
+                await _portfolioRepo.DeletePortfolioByIdAsync(id);
                 return NoContent();
-            } catch (Exception ex)
-            {
-                return NotFound(ex.Message);
-            }
         }
     }
 }

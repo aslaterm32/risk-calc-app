@@ -10,6 +10,6 @@ namespace risk_calc_app.Models
         public decimal? Volatility { get; set; }
 
         //Relationships
-        public ICollection<StockItem> Stocks { get; set; }
+        public ICollection<StockItem> Stocks { get; set; } = new List<StockItem>();
     }
 }
